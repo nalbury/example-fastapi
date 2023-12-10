@@ -1,0 +1,20 @@
+version: '3.8'
+name: pizzacorp
+include:
+  - ${INFRASTRUCTURE_COMPOSE_FILE:-docker-compose.infrastructure.yaml}
+services:
+  # default server container, built from the Dockerfile in the repo root
+  server:
+    container_name: ${APP_NAME}
+    depends_on:
+      - postgres
+    networks:
+      - ${NETWORK_NAME:-default}
+    image: github.com/nalbury/example-fastapi:latest
+    build: ../..
+    environment:
+      - POSTGRES_URL=${LOCAL_POSTGRES_URL}
+    labels:
+      - "traefik.http.routers.examplefastapi.rule=Host(`example-fastapi.dev.local`)"
+    ports:
+      - 5050

@@ -1,8 +1,6 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/python
 {
 	"name": "FastAPI Example",
-	"dockerComposeFile": "docker-compose.devcontainer.yml",
+	"dockerComposeFile": "../infrastructure/local/docker-compose.devcontainer.yaml",
 	"service": "devcontainer",
 	"workspaceFolder": "/src/",
 	"remoteUser": "devcontainer",
@@ -11,6 +9,7 @@
 			"installZsh": true,
 			"configureZshAsDefaultShell": true,
 			"installOhMyZsh": true,
+			"upgradePackages": false,
 			"username": "devcontainer",
 			"userUid": "1000",
 			"userGid": "1000"

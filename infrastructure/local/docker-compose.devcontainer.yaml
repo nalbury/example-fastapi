@@ -1,0 +1,18 @@
+version: '3.8'
+name: pizzacorp
+include:
+  - ${INFRASTRUCTURE_COMPOSE_FILE:-docker-compose.infrastructure.yaml}
+services:
+  devcontainer:
+    container_name: ${APP_NAME}-devcontainer
+    extends:
+      file: ./docker-compose.server.yaml
+      # inherits most configs from the default server service in server.yaml
+      service: server
+    # devcontainer specific overrides
+    build:
+      target: devcontainer
+    user: devcontainer
+    command: sleep infinity
+    volumes:
+      - "../../:/src/"

@@ -1,26 +1,4 @@
 version: '3.8'
 name: pizzacorp
-services:
-  app:
-    networks:
-      - localdev
-    profiles:
-      - server
-    build: .
-    environment:
-      - POSTGRES_URL=postgresql://postgres:postgres@postgres/postgres
-    labels:
-      - "traefik.http.routers.examplefastapi.rule=Host(`example-fastapi.dev.local`)"
-    ports:
-      - 80
-  postgres:
-    networks:
-      - localdev
-    image: postgres:15-bookworm
-    restart: always
-    environment:
-      - POSTGRES_PASSWORD=postgres
-
-networks:
-  localdev:
-    external: true
+include:
+  - infrastructure/local/docker-compose.server.yaml
