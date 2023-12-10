@@ -1,6 +1,6 @@
 {
   "name": "FastAPI Example Codespaces",
-  "dockerComposeFile": "../infrastrcuture/local/docker-compose.codespaces.yaml",
+  "dockerComposeFile": "../../infrastructure/local/docker-compose.codespaces.yaml",
   "service": "codespaces",
   "workspaceFolder": "/src/",
   "remoteUser": "devcontainer",
