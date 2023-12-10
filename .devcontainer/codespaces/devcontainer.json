@@ -1,5 +1,5 @@
 {
-  "name": "FastAPI Example",
+  "name": "FastAPI Example Codespaces",
   "dockerComposeFile": "../infrastrcuture/local/docker-compose.codespaces.yaml",
   "service": "codespaces",
   "workspaceFolder": "/src/",
