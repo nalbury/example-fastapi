@@ -2,42 +2,34 @@
 
 The actual code for this project is largely pulled from sections of the FastAPI docs. It's intended to simply be a demo app for developing various SDLC patterns/tools.
 
-## Running locally
-This project leverages the [example localdev network stack here](https://github.com/nalbury/example-localdev-network) to run a python fastAPI + PostgreSQL app in a local dockerized dev env. 
+## Development Environment(s)
+This project leverages [devcontainers](https://containers.dev/) to faciliate a suite of different development environment choices.
+Each of the following can be run either locally or via Github Codespaces using your IDE of choice: 
+- Single devcontainer (just the app, no infrastructure dependencies)
+- Docker compose devcontainer (app + infrastructure dependencies in docker)
+- Single devcontainer + [MirrorD](https://mirrord.dev/) for developing against a k8s cluster (app in docker + infrastructure dependencies in k8s)
 
-To run the app locally, first clone and run the example local dev network stack:
-```bash
-git clone https://github.com/nalbury/example-localdev-network
-cd example-localdev-network
-docker compose up -d
-```
+### Single Devcontainer
+This environment leverages the `devcontainer` stage of the application's Dockerfile to build a single container env with the application + it's python dependencies. It's intended for simple edits/changes which don't require testing against any other services/data stores. 
 
-Once the network is running, point your workstation's DNS configuration at your localhost IP. On macOS this can be done with the following command:
-```bash
-networksetup -setdnsservers Wi-Fi 127.0.0.1
-```
-**NOTE**
-Don't forget to reset this when you're done by running:
-```bash
-networksetup -setdnsservers Wi-Fi Empty
-```
+**NOTE** This is the default devcontainer config which will be run if no alternate configuration is selected.
 
-Last but not least, you can run the app by running `docker compose up` from the repo root directory. This will launch the server, run the required DB migrations, and start the application. 
+### Docker Compose Devcontainer
+The docker compose based devcontainer environment builds the same application image as the Single devcontainer but with an additional pair of containers for running postgres + pgweb respectively. This allows for application scoped dev/test workflows which require an actual database.
 
-You can interact with the app and view its API docs by going to http://example-fastapi.dev.local/docs in your browser (requires the DNS and reverse proxy from the example local dev network stack).
+### Single Devcontainer + MirrorD
+This option is the most feature packed of the bunch as it allows for a complete prod like environment in a kubernetes cluster running either locally (e.g. k3d) or in the cloud (e.g. GKE). To accomplish this, all application infra (databases etc.), configuration, and networking is first configured in the k8s cluster as if it were a real deployment. Once that's running, [MirrorD](https://mirrord.dev/) can then be used to route all traffic to/from the local devcontainer as if it were a pod running in the cluster.
 
-### Dev Containers
+**TODO** Document this workflow (deploying dev cluster, installing app, running mirrord from devcontainer etc.)
 
-In addition to the standard docker-compose deployment, a `devcontainer.json` file is provided in the `.devcontainer/` directory, which will run a development oriented environment inside of the app's container image. This can be run by simply opening the app in a supported IDE (see below) and using their respective devcontainer extension/plugin.
 
-Supported IDEs:
-- [VSCode](https://code.visualstudio.com/docs/devcontainers/containers#_quick-start-open-an-existing-folder-in-a-container)
-- [IntelliJ (and other Jetbrains Editors)](https://www.jetbrains.com/help/idea/connect-to-devcontainer.html)
+### Tested options for running Devcontainers:
+- [VSCode](https://code.visualstudio.com/docs/devcontainers/containers#_quick-start-open-an-existing-folder-in-a-container) (RECOMMENDED)
+- [IntelliJ (and other Jetbrains Editors)](https://www.jetbrains.com/help/idea/connect-to-devcontainer.html) (very beta)
+- [Official Devcontainer CLI](https://github.com/devcontainers/cli) (reference implementation)
+- [Devpod](https://devpod.sh/) (supports almost all major IDEs + VIM)
+- [Github Codespaces](https://github.com/features/codespaces) (supports almost all major IDEs)
 
 Neovim also has two plugins available for devcontainers but they're untested with this project:
 - https://github.com/esensar/nvim-dev-container
-https://github.com/jamestthompson3/nvim-remote-containers
-
-Devcontainers can also be managed without VSC
-
-
+- https://github.com/jamestthompson3/nvim-remote-containers
