@@ -1,8 +1,8 @@
 {
 	"name": "FastAPI Example",
 	"build": {
-		"context": "../..",
-		"dockerfile": "../../Dockerfile",
+		"context": "..",
+		"dockerfile": "../Dockerfile",
 		"target": "devcontainer"
 	},
 	"workspaceFolder": "/src/",
