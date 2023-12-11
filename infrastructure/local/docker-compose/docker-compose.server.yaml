@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  # default server container, built from the Dockerfile in the repo root
+  server:
+    container_name: ${APP_NAME}
+    depends_on:
+      - postgres
+      - pgweb
+    image: github.com/nalbury/example-fastapi:latest
+    build: ${BUILD_CONTEXT_PATH:-../../..}
+    environment:
+      - POSTGRES_URL=${LOCAL_POSTGRES_URL}
+    ports:
+      - 5050
+  postgres:
+    image: ${LOCAL_POSTGRES_IMAGE:-postgres:latest}
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=${LOCAL_POSTGRES_PASSWORD:-postgres}
+  pgweb:
+    depends_on:
+      - postgres
+    image: ${LOCAL_PGWEB_IMAGE:-ghcr.io/sosedoff/pgweb:0.14.2}
+    environment:
+      - PGWEB_DATABASE_URL=$LOCAL_POSTGRES_URL
+    ports:
+      - "5433:8081"

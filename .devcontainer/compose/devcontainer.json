@@ -1,6 +1,6 @@
 {
-	"name": "FastAPI Example",
-	"dockerComposeFile": "../infrastructure/local/docker-compose.devcontainer.yaml",
+	"name": "FastAPI Example Docker Compose",
+	"dockerComposeFile": "../../infrastructure/local/docker-compose/docker-compose.devcontainer.yaml",
 	"service": "devcontainer",
 	"workspaceFolder": "/src/",
 	"remoteUser": "devcontainer",

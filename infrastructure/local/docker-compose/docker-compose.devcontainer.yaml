@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  devcontainer:
+    depends_on:
+      - postgres
+      - pgweb
+    build:
+      context: ${BUILD_CONTEXT_PATH:-../../..}
+      target: ${DEVCONTAINER_TARGET:-devcontainer}
+    user: ${DEVCONTAINER_USER:-devcontainer}
+    command: sleep infinity
+    volumes:
+      - "${BUILD_CONTEXT_PATH:-../../..}/:/src/"
+    environment:
+      - POSTGRES_URL=${LOCAL_POSTGRES_URL}
+
+  postgres:
+    image: ${LOCAL_POSTGRES_IMAGE:-postgres:latest}
+    environment:
+      - POSTGRES_PASSWORD=${LOCAL_POSTGRES_PASSWORD:-postgres}
+  pgweb:
+    depends_on:
+      - postgres
+    image: ${LOCAL_PGWEB_IMAGE:-ghcr.io/sosedoff/pgweb:0.14.2}
+    environment:
+      - PGWEB_DATABASE_URL=${LOCAL_POSTGRES_URL}
+    ports:
+      - 5433:8081

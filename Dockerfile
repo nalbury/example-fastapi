@@ -9,6 +9,19 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 FROM base as devcontainer
 
+ARG INSTALL_KUBECTL
+
+RUN if [ "$INSTALL_KUBECTL" = "true" ]; then \
+    curl -L https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl \
+    -o /usr/local/bin/kubectl \
+    && chmod +x /usr/local/bin/kubectl; \
+    fi
+
+ARG INSTALL_MIRRORD
+RUN if [ "$INSTALL_MIRRORD" = "true" ]; then \ 
+    curl -fsSL https://raw.githubusercontent.com/metalbear-co/mirrord/main/scripts/install.sh | bash; \
+    fi
+
 ARG USERNAME=devcontainer
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
